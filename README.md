@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/systemstart/tls.svg?branch=master)](https://travis-ci.org/systemstart/tls)
+
 The Location Service(TLS)
 =========================
 
