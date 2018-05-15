@@ -7,7 +7,8 @@ KEYFILE_DEFINED = "GOOGLE_PLACES_API_KEY" in os.environ
 
 def test_without_keyfile_var(monkeypatch):
     from tls import plugin_google
-    monkeypatch.delenv("GOOGLE_PLACES_API_KEY")
+    if "GOOGLE_PLACES_API_KEY" in os.environ:
+        monkeypatch.delenv("GOOGLE_PLACES_API_KEY")
     with pytest.raises(RuntimeError):
         plugin_google.Plugin()
 
