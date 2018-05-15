@@ -1,4 +1,5 @@
 import re
+import logging
 import asyncio
 
 import aiohttp
@@ -9,6 +10,8 @@ from tls import util
 RX_LOCATION = re.compile(r"-?\d+\.\d+")
 
 async def handle(request):
+    log = logging.getLogger("handle[{}]".format(request.remote))
+
     query = request.match_info.get("query", "").strip()
     if not query:
         msg = {"error": "no query"}
@@ -34,7 +37,13 @@ async def handle(request):
     for service in request.app["services"]:
         service_requests.append(service(query, **params))
 
-    results = await asyncio.gather(*service_requests)
+    try:
+        results = await asyncio.gather(*service_requests)
+    except Exception as e:
+        log.error("gathering failed: %s", e)
+        msg = {"error": str(e)}
+        return aiohttp.web.json_response(msg, status=400)
+
     return aiohttp.web.json_response({"results": results})
 
 def get_app():
