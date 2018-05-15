@@ -11,10 +11,11 @@ It's built for Python 3.6
 Setup
 -----
 
-* Create a virtual environment and activate it(OPTIONAL)
+* (Optional) Create a virtual environment and activate it.
 * Install dependencies: Run `pip install -r requirements.txt`.
 * Install TLS: Run `pip install .`
-* Start TLS: Run `tlsd`
+* Make sure you have a API-Key file for Google Places
+* Start TLS: Run `GOOGLE_PLACES_API_KEY=/path/to/key/file tlsd`
 
 Note: The service will bind to "0.0.0.0:8080" by default, check `tlsd -h`
 about how to change that.
