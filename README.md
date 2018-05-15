@@ -6,7 +6,7 @@ The Location Service(TLS)
 This is a simple REST service to query location services. It was build as a 
 coding challenge, not as a real life product.
 
-It's build for Python 3.6
+It's built for Python 3.6
 
 Setup
 -----
