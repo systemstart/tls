@@ -18,9 +18,12 @@ API_STATUS_CODES = {
                         lack of an invalid key parameter.",
     "INVALID_REQUEST": "generally indicates that a required query parameter \
             (location or radius) is missing.",
-    "UNKNOWN_ERROR": "unknown error"}
+    "UNKNOWN_ERROR": "unknown error",
+}
 
 DESC_RX = re.compile(r"_(.)")
+
+
 def build_description(items):
     result = []
     for i in items:
@@ -29,6 +32,7 @@ def build_description(items):
         result.append(tmp)
 
     return ", ".join(result)
+
 
 def get_api_key():
     if "GOOGLE_PLACES_API_KEY" not in os.environ:
@@ -41,6 +45,7 @@ def get_api_key():
 
     with open(keyfile) as f:
         return f.read().strip()
+
 
 class Plugin(object):
     def __init__(self):
@@ -59,8 +64,9 @@ class Plugin(object):
             if "longitude" not in kwargs:
                 raise RuntimeError("parameter 'longitude' missing")
 
-            params["location"] = "{},{}".format(kwargs.get("latitude"),
-                                                kwargs.get("longitude"))
+            params["location"] = "{},{}".format(
+                kwargs.get("latitude"), kwargs.get("longitude")
+            )
             params["radius"] = kwargs.get("radius", 10000)
 
             if query:
@@ -75,8 +81,9 @@ class Plugin(object):
             async with session.get(url, params=params) as response:
                 data = await response.json()
                 if data["status"] != "OK":
-                    msg = "{}: {}".format(data["status"], 
-                                          API_STATUS_CODES[data["status"]])
+                    msg = "{}: {}".format(
+                        data["status"], API_STATUS_CODES[data["status"]]
+                    )
                     raise RuntimeError(msg)
 
                 result = []
@@ -87,12 +94,14 @@ class Plugin(object):
                     else:
                         address = location["vicinity"]
 
-                    item = {"provider": "google",
-                            "id": location["id"],
-                            "name": location["name"],
-                            "description": build_description(location["types"]),
-                            "location": "{},{}".format(geo["lat"], geo["lng"]),
-                            "address": address,
-                            "details": DETAILS_URL.format(location["place_id"])}
+                    item = {
+                        "provider": "google",
+                        "id": location["id"],
+                        "name": location["name"],
+                        "description": build_description(location["types"]),
+                        "location": "{},{}".format(geo["lat"], geo["lng"]),
+                        "address": address,
+                        "details": DETAILS_URL.format(location["place_id"]),
+                    }
                     result.append(item)
                 return result
