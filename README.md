@@ -24,7 +24,7 @@ Tests
 -----
 
 * Install development dependencies: Run `pip install -r requirements-dev.txt`
-* Run `pytest -v`
+* Run `PYTHON_PATH=. pytest -v`
 
 Some tests will be skipped as they require a API key. If you have one, 
-you can run the tests like this: `GOOGLE_PLACES_API_KEY=/path/to/key/file pytest -v`
+you can run the tests like this: `GOOGLE_PLACES_API_KEY=/path/to/key/file PYTHON_PATH=. pytest -v`
